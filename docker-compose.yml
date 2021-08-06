@@ -1,0 +1,78 @@
+version: "3.9"
+
+services:
+  etcd:
+    container_name: etcd
+    image: bitnami/etcd:3.5.0-debian-10-r44
+    restart: always
+    command:
+      - '--name=etcd'
+      - '--initial-advertise-peer-urls=http://etcd:2380'
+      - '--listen-peer-urls=http://0.0.0.0:2380'
+      - '--listen-client-urls=http://0.0.0.0:2379'
+      - '--advertise-client-urls=http://etcd:2379'
+      - '--initial-cluster-token=mys3cr3ttok3n'
+      - '--heartbeat-interval=250'
+      - '--election-timeout=1250'
+      - '--initial-cluster=etcd=http://etcd:2380'
+      - '--initial-cluster-state=new'
+    volumes:
+      - etcd:/bitnami/etcd
+    expose: 
+      - 2379
+      - 2380
+    ports:
+      - 2379:2379
+      - 2380:2380
+
+  minio:
+    container_name: minio
+    image: bitnami/minio:2021.6.17-debian-10-r37
+    restart: always
+    volumes:
+      - minio:/data
+    networks:
+      - minio
+    ports:
+      - 9000:9000
+    expose:
+      - 9000
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: admin
+      MINIO_ETCD_ENDPOINTS: http://etcd:2379
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    depends_on:
+      - etcd
+
+  minio_console:
+    container_name: minio_console
+    image: minio/console:v0.8.2
+    restart: always
+    command: server
+    networks:
+      - minio
+    ports:
+      - 9090:9090
+    expose:
+      - 9090
+    environment:
+      CONSOLE_HMAC_JWT_SECRET: ### jwt_secret ###
+      CONSOLE_PBKDF_PASSPHRASE: ### pbkdf_passphrase ###
+      CONSOLE_PBKDF_SALT: ### pbkdf_salt ###
+      CONSOLE_ACCESS_KEY: admin
+      CONSOLE_SECRET_KEY: admin
+      CONSOLE_MINIO_SERVER: http://minio:9000
+
+volumes:
+  etcd:
+    driver: local
+  minio:
+    driver: local
+
+networks:
+  minio:
