@@ -4,75 +4,79 @@ services:
   etcd:
     container_name: etcd
     image: bitnami/etcd:3.5.0-debian-10-r44
-    restart: always
-    command:
-      - '--name=etcd'
-      - '--initial-advertise-peer-urls=http://etcd:2380'
-      - '--listen-peer-urls=http://0.0.0.0:2380'
-      - '--listen-client-urls=http://0.0.0.0:2379'
-      - '--advertise-client-urls=http://etcd:2379'
-      - '--initial-cluster-token=mys3cr3ttok3n'
-      - '--heartbeat-interval=250'
-      - '--election-timeout=1250'
-      - '--initial-cluster=etcd=http://etcd:2380'
-      - '--initial-cluster-state=new'
+    restart: on-failure
+    environment:
+      ALLOW_NONE_AUTHENTICATION: "yes"
+      BITNAMI_DEBUG: "true"
+      ETCD_DATA_DIR: "/bitnami/etcd/data"
+      ETCDCTL_API: 3
+      ETCD_ROOT_PASSWORD: root
+      ETCD_NAME: etcd
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd:2380
+      ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
+      ETCD_INITIAL_CLUSTER_TOKEN: etcd-cluster
+      ETCD_INITIAL_CLUSTER: etcd=http://etcd:2380
+      ETCD_INITIAL_CLUSTER_STATE: new
     volumes:
-      - etcd:/bitnami/etcd
-    expose: 
-      - 2379
-      - 2380
-    ports:
-      - 2379:2379
-      - 2380:2380
+      - etcd_data:/bitnami/etcd
 
   minio:
     container_name: minio
-    image: bitnami/minio:2021.6.17-debian-10-r37
-    restart: always
+    image: minio/minio:RELEASE.2021-08-05T22-01-19Z
+    command: server /data
+    restart: on-failure
     volumes:
-      - minio:/data
-    networks:
-      - minio
+      - minio_data:/data
     ports:
       - 9000:9000
-    expose:
-      - 9000
     environment:
-      MINIO_ACCESS_KEY: admin
-      MINIO_SECRET_KEY: admin
-      MINIO_ETCD_ENDPOINTS: http://etcd:2379
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY-minio}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY-minio123}
+      #MINIO_ROOT_USER: ${MINIO_ROOT_USER-minio}
+      #MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD-minio123}
+    #   MINIO_ETCD_ENDPOINTS: http://etcd:2379
+    # depends_on:
+    #   - etcd
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: ["CMD", "curl", "-f", "http://localhost:9001/minio/health/live"]
       interval: 30s
-      timeout: 20s
+      timeout: 5s
       retries: 3
-    depends_on:
-      - etcd
 
-  minio_console:
-    container_name: minio_console
+  console:
+    container_name: console
     image: minio/console:v0.8.2
-    restart: always
     command: server
-    networks:
-      - minio
+    restart: on-failure
     ports:
-      - 9090:9090
-    expose:
-      - 9090
+      - 8080:9090
     environment:
-      CONSOLE_HMAC_JWT_SECRET: ### jwt_secret ###
-      CONSOLE_PBKDF_PASSPHRASE: ### pbkdf_passphrase ###
-      CONSOLE_PBKDF_SALT: ### pbkdf_salt ###
-      CONSOLE_ACCESS_KEY: admin
-      CONSOLE_SECRET_KEY: admin
+      #CONSOLE_HMAC_JWT_SECRET: ### jwt_secret ###
+      #CONSOLE_PBKDF_PASSPHRASE: ### pbkdf_passphrase ###
+      #CONSOLE_PBKDF_SALT: ### pbkdf_salt ###
+      CONSOLE_ACCESS_KEY: ${MINIO_ROOT_USER-minio}
+      CONSOLE_SECRET_KEY: ${MINIO_ROOT_PASSWORD-minio123}
       CONSOLE_MINIO_SERVER: http://minio:9000
 
-volumes:
-  etcd:
-    driver: local
-  minio:
-    driver: local
+  mc:
+    container_name: mc
+    image: minio/mc:RELEASE.2021-07-27T06-46-19Z
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host rm local;
+      /usr/bin/mc config host add --quiet --api s3v4 local http://minio:9000 ${MINIO_ACCESS_KEY-minio} ${MINIO_SECRET_KEY-minio123};
+      /usr/bin/mc rb --force local/${BUCKET-minio}/;
+      /usr/bin/mc mb --quiet local/${BUCKET-minio}/;
+      /usr/bin/mc policy set public local/${BUCKET-minio};
+      "
 
-networks:
-  minio:
+volumes:
+  etcd_data:
+    driver: local
+  minio_data:
+    driver: local
+    
