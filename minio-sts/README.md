@@ -4,12 +4,18 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 
 ## Index
 
+- [Prerequisites](#prerequisites)
 - [Environment variables](#environment-variables)
 - [How to run](#how-to-run)
 - [Services](#services)
 - [Keycloak configuration](#keycloak-configuration)
 - [Known issues](#known-issues)
 - [Related Links](#related-links)
+
+## Prerequisites
+
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Environment variables
 
