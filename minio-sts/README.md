@@ -24,6 +24,12 @@ PostgreSQL is a powerful, open source object-relational database.
 
 A graphical user interface for [MinIO](https://github.com/minio/minio)
 
+## Keycloak integration setup
+
+You need to make some changes to the Keycloak Realm in order to use MinIO.
+
+I'll describe it later. :)
+
 ## Known issues
 
 - As Keycloak takes a long time to start up, you may need to restart the Minio's container after Keycloak is ready.
