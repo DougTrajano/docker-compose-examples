@@ -20,15 +20,35 @@ Keycloak is an Open Source Identity and Access Management solution for modern Ap
 
 PostgreSQL is a powerful, open source object-relational database.
 
-### [MinIO Console](https://github.com/minio/console)
+### [MinIO Console](https://github.com/minio/console) - Optional
 
-A graphical user interface for [MinIO](https://github.com/minio/minio)
+A graphical user interface for [MinIO](https://github.com/minio/minio).
 
 ## Keycloak integration setup
 
 You need to make some changes to the Keycloak Realm in order to use MinIO.
 
-I'll describe it later. :)
+- Navigate to the Keycloak UI: [http://localhost:8080/auth/](http://localhost:8080/auth/).
+- In the left menu, click on **Clients**.
+   - Click on **Edit** for account client.
+   - Turn on **Implicit Flow Enabled**.
+   - Add "*" to the **Valid Redirect URIs** field.
+   - Click on **Save**.
+- Also in the account client, click on **Mappers**.
+   - Click on **Create**.
+   - Fill in the **Name** field with "policy".
+   - Change the **Mapper Type** to "User Attribute".
+   - Fill in the "User Attribute" field with "policy".
+   - Fill in the "Token Claim Name" field with "policy".
+   - Click on **Save**.
+- In the left menu, click on **Users**.
+   - Click on **View all users**.
+   - Click on **Edit** for user "admin".
+   - Go to **Attributes** tab.
+   - Fill in the Key field with "policy" and Value field with "readwrite".
+   - Click on **Add** and then **Save**.
+
+Right now, you should be able to login to MinIO using the policies that yo created in Keycloak.
 
 ## Known issues
 
