@@ -2,7 +2,42 @@
 
 In this example, we will set up a MinIO Gateway S3 with STS using [Docker Compose](https://docs.docker.com/compose/).
 
-## Components
+## Index
+
+- [Environment variables](#environment-variables)
+- [Services](#services)
+- [Keycloak configuration](#keycloak-configuration)
+- [Known issues](#known-issues)
+- [Related Links](#related-links)
+
+## [Enviroment variables](https://docs.docker.com/compose/environment-variables/)
+
+You need to set the following environment variables. The best way to do this is to add them to a `.env` file in the same directory as `docker-compose.yml`.
+
+This docker-compose uses the following environment variables:
+
+| Variable name  |  Description  | Default value |
+| - | - | - |
+| MINIO_ACCESS_KEY | MinIO access key | `"minio"` |
+| MINIO_SECRET_KEY | MinIO secret key | `"minio123"` |
+| MINIO_ROOT_USER | AWS Access Key | `None` |
+| MINIO_ROOT_PASSWORD | AWS Secret Key | `None` |
+
+## How to run
+
+To run all the required services, execute the following command:
+
+```bash
+docker-compose up
+```
+
+[MinIO Console](#minio-console) is an optional service. To run the stack with it, execute the following command:
+
+```bash
+docker-compose --profile console up
+```
+
+## Services
 
 ### [MinIO Server](https://min.io/) - S3 Gateway
 
@@ -24,7 +59,7 @@ PostgreSQL is a powerful, open source object-relational database.
 
 A graphical user interface for [MinIO](https://github.com/minio/minio).
 
-## Keycloak integration setup
+## Keycloak configuration
 
 You need to make some changes to the Keycloak Realm in order to use MinIO.
 
