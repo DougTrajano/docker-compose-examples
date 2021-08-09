@@ -4,7 +4,7 @@ This repository contains a collection of examples of [Docker Compose](https://do
 
 ## Examples
 
-- [minio-etcd-console](minio-etcd-console)
+- [MinIO STS](minio-sts) - (with Keycloak, MinIO S3 Gateway, MinIO Console and Etcd)
 
 ## License
 
