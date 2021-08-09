@@ -10,11 +10,9 @@ In this example, we will set up a MinIO Gateway S3 with STS using [Docker Compos
 - [Known issues](#known-issues)
 - [Related Links](#related-links)
 
-## [Enviroment variables](https://docs.docker.com/compose/environment-variables/)
+## Enviroment variables
 
-You need to set the following environment variables. The best way to do this is to add them to a `.env` file in the same directory as `docker-compose.yml`.
-
-This docker-compose uses the following environment variables:
+You need to set the following [environment variables](https://docs.docker.com/compose/environment-variables/) to use this Docker Compose.
 
 | Variable name  |  Description  | Default value |
 | - | - | - |
@@ -22,6 +20,8 @@ This docker-compose uses the following environment variables:
 | MINIO_SECRET_KEY | MinIO secret key | `"minio123"` |
 | MINIO_ROOT_USER | AWS Access Key | `None` |
 | MINIO_ROOT_PASSWORD | AWS Secret Key | `None` |
+
+The best way to do this is to add them to a `.env` file in the same directory as `docker-compose.yml`.
 
 ## How to run
 
