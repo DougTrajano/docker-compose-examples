@@ -19,7 +19,7 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 
 ## Environment variables
 
-You need to set the following [environment variables](https://docs.docker.com/compose/environment-variables/) to use this Docker Compose.
+You need to set the following [environment variables](https://docs.docker.com/compose/environment-variables/) to use this [Docker Compose](https://docs.docker.com/compose/).
 
 | Variable name  |  Description  | Default value |
 | - | - | - |
@@ -103,13 +103,13 @@ You need to make some changes to the Keycloak Realm in order to use MinIO.
    - Fill in the **Key** field with "policy" and **Value** field with "readwrite".
    - Click on **Add** and then **Save**.
 
-Right now, you should be able to login to MinIO using the policies that yo created in Keycloak.
+Right now, you should be able to log in to MinIO using the policies that you created in Keycloak.
 
-There's a lot of more configuration that you can do. Please refer to the [related links](#related-links) for more information.
+There's a lot more configuration that you can do. Please refer to the [related links](#related-links) for more information.
 
 ## Known issues
 
-- As Keycloak takes a long time to start up, you may need to restart the Minio's container after Keycloak is ready.
+- As Keycloak takes a long time to start up, you may need to restart the MinIO container after Keycloak is ready.
 
 ## Related Links
 
