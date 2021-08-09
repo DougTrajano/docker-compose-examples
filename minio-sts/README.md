@@ -1,6 +1,6 @@
 # Minio STS - Docker Compose example
 
-In this example, we will set up a MinIO Gateway S3 with STS using [Docker Compose](https://docs.docker.com/compose/).
+In this example, we will set up a MinIO Gateway S3 with STS (Security Token Service) using [Docker Compose](https://docs.docker.com/compose/).
 
 ## Index
 
@@ -80,10 +80,12 @@ You need to make some changes to the Keycloak Realm in order to use MinIO.
    - Click on **View all users**.
    - Click on **Edit** for user "admin".
    - Go to **Attributes** tab.
-   - Fill in the Key field with "policy" and Value field with "readwrite".
+   - Fill in the **Key** field with "policy" and **Value** field with "readwrite".
    - Click on **Add** and then **Save**.
 
 Right now, you should be able to login to MinIO using the policies that yo created in Keycloak.
+
+There's a lot of more configuration that you can do. Please refer to the [related links](#related-links) for more information.
 
 ## Known issues
 
