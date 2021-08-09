@@ -5,10 +5,11 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 ## Index
 
 - [Prerequisites](#prerequisites)
-- [Environment variables](#environment-variables)
-- [How to run](#how-to-run)
 - [Services](#services)
-- [Keycloak configuration](#keycloak-configuration)
+- [Project Setup](#project-setup)
+   - [Environment variables](#environment-variables)
+   - [Docker Compose up](#docker-compose-up)
+   - [Keycloak configuration](#keycloak-configuration)
 - [Known issues](#known-issues)
 - [Related Links](#related-links)
 
@@ -17,7 +18,31 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Environment variables
+## Services
+
+### [MinIO Server](https://min.io/) - S3 Gateway
+
+MinIO is a High Performance Object Storage released under Apache License v2.0. It is API compatible with Amazon S3 cloud storage service. Use MinIO to build high performance infrastructure for machine learning, analytics and application data workloads.
+
+### [Etcd](https://coreos.com/etcd/) 
+
+etcd is a distributed key-value store designed to securely store data across a cluster. etcd is widely used in production on account of its reliability, fault-tolerance and ease of use.
+
+### [Keycloak](https://www.keycloak.org/)
+
+Keycloak is an Open Source Identity and Access Management solution for modern Applications and Services.
+
+### [Postgres](https://www.postgresql.org/) - Keycloak Database
+
+PostgreSQL is a powerful, open source object-relational database.
+
+### [MinIO Console](https://github.com/minio/console) - Optional
+
+A graphical user interface for [MinIO](https://github.com/minio/minio).
+
+## Project setup
+
+### Environment variables
 
 You need to set the following [environment variables](https://docs.docker.com/compose/environment-variables/) to use this [Docker Compose](https://docs.docker.com/compose/).
 
@@ -43,7 +68,7 @@ MINIO_ROOT_PASSWORD=YOUR-AWS-SECRET-KEY
 </p>
 </details>
 
-## How to run
+### Docker Compose up
 
 To run all the required services, execute the following command:
 
@@ -57,29 +82,7 @@ docker-compose up
 docker-compose --profile console up
 ```
 
-## Services
-
-### [MinIO Server](https://min.io/) - S3 Gateway
-
-MinIO is a High Performance Object Storage released under Apache License v2.0. It is API compatible with Amazon S3 cloud storage service. Use MinIO to build high performance infrastructure for machine learning, analytics and application data workloads.
-
-### [Etcd](https://coreos.com/etcd/) 
-
-etcd is a distributed key-value store designed to securely store data across a cluster. etcd is widely used in production on account of its reliability, fault-tolerance and ease of use.
-
-### [Keycloak](https://www.keycloak.org/)
-
-Keycloak is an Open Source Identity and Access Management solution for modern Applications and Services.
-
-### [Postgres](https://www.postgresql.org/) - Keycloak Database
-
-PostgreSQL is a powerful, open source object-relational database.
-
-### [MinIO Console](https://github.com/minio/console) - Optional
-
-A graphical user interface for [MinIO](https://github.com/minio/minio).
-
-## Keycloak configuration
+### Keycloak configuration
 
 You need to make some changes to the Keycloak Realm in order to use MinIO.
 
