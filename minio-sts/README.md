@@ -30,6 +30,19 @@ You need to set the following [environment variables](https://docs.docker.com/co
 
 The best way to do this is to add them to a `.env` file in the same directory as `docker-compose.yml`.
 
+<details><summary>.env</summary>
+<p>
+
+```env
+MINIO_ACCESS_KEY=minio
+MINIO_SECRET_KEY=minio123
+MINIO_ROOT_USER=YOUR-AWS-ACCESS-KEY
+MINIO_ROOT_PASSWORD=YOUR-AWS-SECRET-KEY
+```
+
+</p>
+</details>
+
 ## How to run
 
 To run all the required services, execute the following command:
