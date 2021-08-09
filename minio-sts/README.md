@@ -10,7 +10,7 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 - [Known issues](#known-issues)
 - [Related Links](#related-links)
 
-## Enviroment variables
+## Environment variables
 
 You need to set the following [environment variables](https://docs.docker.com/compose/environment-variables/) to use this Docker Compose.
 
