@@ -5,6 +5,7 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 ## Index
 
 - [Environment variables](#environment-variables)
+- [How to run](#how-to-run)
 - [Services](#services)
 - [Keycloak configuration](#keycloak-configuration)
 - [Known issues](#known-issues)
