@@ -1,0 +1,119 @@
+version: "3.9"
+
+services:
+  etcd:
+    container_name: etcd
+    image: bitnami/etcd:3.5.0-debian-10-r44
+    restart: on-failure
+    environment:
+      ALLOW_NONE_AUTHENTICATION: "yes"
+      BITNAMI_DEBUG: "true"
+      ETCD_DATA_DIR: "/bitnami/etcd/data"
+      ETCDCTL_API: 3
+      ETCD_ROOT_PASSWORD: root
+      ETCD_NAME: etcd
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd:2380
+      ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
+      ETCD_INITIAL_CLUSTER_TOKEN: etcd-cluster
+      ETCD_INITIAL_CLUSTER: etcd=http://etcd:2380
+      ETCD_INITIAL_CLUSTER_STATE: new
+    volumes:
+      - etcd_data:/bitnami/etcd
+
+  console:
+    container_name: console
+    image: minio/console:v0.8.2
+    command: server
+    restart: on-failure
+    depends_on:
+      - minio
+    ports:
+      - 8000:8000
+    environment:
+      #CONSOLE_HMAC_JWT_SECRET: ### jwt_secret ###
+      #CONSOLE_PBKDF_PASSPHRASE: ### pbkdf_passphrase ###
+      #CONSOLE_PBKDF_SALT: ### pbkdf_salt ###
+      CONSOLE_ACCESS_KEY: ${MINIO_ROOT_USER-minio}
+      CONSOLE_SECRET_KEY: ${MINIO_ROOT_PASSWORD-minio123}
+      CONSOLE_MINIO_SERVER: http://minio:9000
+
+  minio:
+    container_name: minio
+    image: bitnami/minio:2021
+    command: minio gateway s3
+    ports:
+      - 9000:9000
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD-minio123}
+      MINIO_ETCD_ENDPOINTS: http://etcd:2379
+      MINIO_IDENTITY_OPENID_CONFIG_URL: http://keycloak:8080/auth/realms/master/.well-known/openid-configuration
+      MINIO_IDENTITY_OPENID_REDIRECT_URI: http://localhost:9000/oauth_callback
+      MINIO_IDENTITY_OPENID_CLAIM_NAME: policy
+      MINIO_IDENTITY_OPENID_CLIENT_ID: account
+      MINIO_IDENTITY_OPENID_VENDOR: keycloak
+      MINIO_IDENTITY_OPENID_KEYCLOAK_REALM: master
+      MINIO_IDENTITY_OPENID_KEYCLOAK_ADMIN_URL: http://keycloak:8080/auth
+      MINIO_IDENTITY_OPENID_SCOPES: openid,email,profile
+    depends_on:
+      - etcd
+      - keycloak
+      - wait-for-keycloak
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:14.0.0
+    environment:
+      KEYCLOAK_FRONTEND_URL: http://127.0.0.1:8080/auth
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      #DB_SCHEMA: public
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/realms/master"]
+      interval: 10s
+      timeout: 5s
+      retries: 50 # keycloak takes a long time to start up
+
+  postgres:
+    container_name: postgres
+    image: postgres:9.6.22-alpine
+    volumes:
+      - keycloak_data:/var/lib/postgresql/
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  wait-for-keycloak:
+    container_name: wait-for-keycloak
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - keycloak
+    command: keycloak:8080
+
+volumes:
+  keycloak_data:
+    driver: local
+  etcd_data:
+    driver: local    

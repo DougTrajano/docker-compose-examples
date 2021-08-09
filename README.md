@@ -1,9 +1,11 @@
-# minio docker-compose
+# [Docker Compose](https://docs.docker.com/compose/) examples
 
-This project contains the docker-compose files for deploying minio, etcd, and console.
+This repository contains a collection of examples of [Docker Compose](https://docs.docker.com/compose/) files that demonstrate common use cases.
 
-## How to deploy
+## Examples
 
-```
-docker-compose up -d
-```
+- [minio-etcd-console](minio-etcd-console)
+
+## License
+
+The project is licensed under the [Apache 2.0 License](LICENSE).
