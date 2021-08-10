@@ -17,9 +17,6 @@ jobs:
         run: docker-compose -f "docker-compose-examples/ds-stack/docker-compose.yml" config
       - name: ds-stack build
         run: docker-compose -f "docker-compose-examples/ds-stack/docker-compose.yml" up -d --build
-        
-    steps:
-      - uses: actions/checkout@v2
       - name: minio-sts config
         run: docker-compose -f "docker-compose-examples/minio-sts/docker-compose.yml" config
       - name: minio-sts build
