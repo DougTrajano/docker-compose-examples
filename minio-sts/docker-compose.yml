@@ -32,7 +32,7 @@ services:
     depends_on:
       - minio
     ports:
-      - 8000:8000
+      - 9090:9090
     environment:
       CONSOLE_ACCESS_KEY: ${MINIO_ROOT_USER-minio}
       CONSOLE_SECRET_KEY: ${MINIO_ROOT_PASSWORD-minio123}
