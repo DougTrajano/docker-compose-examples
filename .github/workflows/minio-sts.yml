@@ -1,0 +1,21 @@
+name: Verify minio-sts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: minio-sts config
+        run: docker-compose -f "minio-sts/docker-compose.yml" config
+      - name: minio-sts up
+        run: docker-compose -f "minio-sts/docker-compose.yml" up -d --build
+      - name: minio-sts down
+        run: docker-compose -f "minio-sts/docker-compose.yml" down

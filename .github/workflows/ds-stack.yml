@@ -1,4 +1,4 @@
-name: Verify docker-compose.yml
+name: Verify ds-stack
 
 on:
   push:
