@@ -5,6 +5,8 @@ services:
     container_name: etcd
     image: bitnami/etcd:3.5.0-debian-10-r44
     restart: always
+    volumes:
+      - data_etcd:/bitnami/etcd
     environment:
       ALLOW_NONE_AUTHENTICATION: "yes"
       BITNAMI_DEBUG: "true"
@@ -19,8 +21,6 @@ services:
       ETCD_INITIAL_CLUSTER_TOKEN: etcd-cluster
       ETCD_INITIAL_CLUSTER: etcd=http://etcd:2380
       ETCD_INITIAL_CLUSTER_STATE: new
-    volumes:
-      - data_etcd:/bitnami/etcd
 
   console:
     container_name: console
@@ -45,6 +45,9 @@ services:
     restart: always
     ports:
       - 9000:9000
+    depends_on:
+      - etcd
+      - keycloak
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD-minio123}
@@ -57,10 +60,6 @@ services:
       MINIO_IDENTITY_OPENID_KEYCLOAK_REALM: master
       MINIO_IDENTITY_OPENID_KEYCLOAK_ADMIN_URL: http://keycloak:8080/auth
       MINIO_IDENTITY_OPENID_SCOPES: openid,email,profile
-    depends_on:
-      - etcd
-      - keycloak
-      - wait-for-keycloak
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
@@ -71,6 +70,10 @@ services:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:14.0.0
     restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - keycloak-db
     environment:
       KEYCLOAK_FRONTEND_URL: http://localhost:8080/auth
       DB_VENDOR: postgres
@@ -80,10 +83,6 @@ services:
       DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-    ports:
-      - 8080:8080
-    depends_on:
-      - keycloak-db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/realms/master"]
       interval: 10s
@@ -105,14 +104,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  wait-for-keycloak:
-    container_name: wait-for-keycloak
-    image: dadarek/wait-for-dependencies
-    restart: on-failure
-    depends_on:
-      - keycloak
-    command: keycloak:8080
 
 volumes:
   data_keycloak:
