@@ -13,6 +13,14 @@ edit_uri: ""
 use_directory_urls: false
 copyright: Copyright 2021 Douglas Trajano. Licensed under the Apache License, Version 2.0.
 
+nav:
+  - Overview: README.md
+  - Examples:
+    - DS Stack: examples/ds-stack.md
+    - MinIO STS: examples/minio-sts.md
+  - Glossary: glossary/README.md
+
+
 theme:
   name: material
   logo: assets/logo.png
