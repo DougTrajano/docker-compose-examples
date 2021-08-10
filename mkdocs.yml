@@ -18,8 +18,6 @@ nav:
   - Examples:
     - DS Stack: examples/ds-stack.md
     - MinIO STS: examples/minio-sts.md
-  - Glossary: glossary/README.md
-
 
 theme:
   name: material
