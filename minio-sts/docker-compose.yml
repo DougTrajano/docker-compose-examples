@@ -20,7 +20,7 @@ services:
       ETCD_INITIAL_CLUSTER: etcd=http://etcd:2380
       ETCD_INITIAL_CLUSTER_STATE: new
     volumes:
-      - etcd_data:/bitnami/etcd
+      - data_etcd:/bitnami/etcd
 
   console:
     container_name: console
@@ -34,9 +34,6 @@ services:
     ports:
       - 8000:8000
     environment:
-      #CONSOLE_HMAC_JWT_SECRET: ### jwt_secret ###
-      #CONSOLE_PBKDF_PASSPHRASE: ### pbkdf_passphrase ###
-      #CONSOLE_PBKDF_SALT: ### pbkdf_salt ###
       CONSOLE_ACCESS_KEY: ${MINIO_ROOT_USER-minio}
       CONSOLE_SECRET_KEY: ${MINIO_ROOT_PASSWORD-minio123}
       CONSOLE_MINIO_SERVER: http://minio:9000
@@ -98,7 +95,7 @@ services:
     image: postgres:9.6.22-alpine
     restart: always
     volumes:
-      - keycloak_data:/var/lib/postgresql/
+      - data_keycloak:/var/lib/postgresql/
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -118,7 +115,7 @@ services:
     command: keycloak:8080
 
 volumes:
-  keycloak_data:
+  data_keycloak:
     driver: local
-  etcd_data:
-    driver: local    
+  data_etcd:
+    driver: local

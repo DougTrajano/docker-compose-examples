@@ -1,0 +1,26 @@
+name: Verify docker-compose.yml
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: ds-stack config
+        run: docker-compose -f "docker-compose-examples/ds-stack/docker-compose.yml" config
+      - name: ds-stack build
+        run: docker-compose -f "docker-compose-examples/ds-stack/docker-compose.yml" up -d --build
+        
+    steps:
+      - uses: actions/checkout@v2
+      - name: minio-sts config
+        run: docker-compose -f "docker-compose-examples/minio-sts/docker-compose.yml" config
+      - name: minio-sts build
+        run: docker-compose -f "docker-compose-examples/minio-sts/docker-compose.yml" up -d --build
