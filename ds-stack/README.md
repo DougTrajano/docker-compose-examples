@@ -73,12 +73,19 @@ To run all the required services, execute the following command:
 docker-compose up
 ```
 
+[Dataiku Data Science Studio (DSS)](https://www.dataiku.com/) is an optional service. To run the stack with it, execute the following command:
+
+```bash
+docker-compose --profile dataiku up
+```
+
 You can now access the following endpoints:
 
 | Endpoint | Description |
 | - | - |
 | [http://localhost:8888/](http://localhost:8888/) | JupyterLab |
 | [http://localhost:5000/](http://localhost:5000/) | MLflow UI |
+| [http://localhost:11000/](http://localhost:11000/) | Dataiku (optional) |
 
 ## Next features
 
