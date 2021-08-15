@@ -4,7 +4,7 @@ This Docker Compose stack is a collection of services that can be used to run a 
 
 | **JupyterLab** | **MLFlow Server** |
 | :-: | :-: |
-| ![](images/JupyterLab.png) | ![](images/mlflow.png) |
+| ![](../docs/images/JupyterLab.png) | ![](../docs/images/mlflow.png) |
 
 ## Prerequisites
 
@@ -19,12 +19,12 @@ On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is in
 
 MLflow is an open source platform to manage the ML lifecycle, including experimentation, reproducibility, deployment, and a central model registry. MLflow currently offers four components:
 
-- [[MLflow Tracking](https://mlflow.org/docs/latest/tracking.html)]{Record and query experiments: code, data, config, and results|top-right}
-- [[MLflow Projects](https://mlflow.org/docs/latest/projects.html)]{Package data science code in a format to reproduce runs on any platform|top-right}
-- [[MLflow Models](https://mlflow.org/docs/latest/models.html)]{Deploy machine learning models in diverse serving environments|top-right}
-- [[Mlflow Registry](https://mlflow.org/docs/latest/model-registry.html)]{Store, annotate, discover, and manage models in a central repository|top-right}
+- [[MLflow Tracking](https://mlflow.org/docs/latest/tracking.html)]: Record and query experiments: code, data, config, and results.
+- [[MLflow Projects](https://mlflow.org/docs/latest/projects.html)]: Package data science code in a format to reproduce runs on any platform.
+- [[MLflow Models](https://mlflow.org/docs/latest/models.html)]: Deploy machine learning models in diverse serving environments.
+- [[Mlflow Registry](https://mlflow.org/docs/latest/model-registry.html)]: Store, annotate, discover, and manage models in a central repository.
 
-![](images/mlflow_lifecycle.png)
+![](../docs/images/mlflow_lifecycle.png)
 
 ### [JupyterLab](https://jupyter.org/)
 
