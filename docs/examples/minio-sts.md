@@ -7,6 +7,8 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
+On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs.
+
 ## Services
 
 ### [MinIO Server](https://min.io/) - S3 Gateway
@@ -34,15 +36,6 @@ A graphical user interface for [MinIO](https://github.com/minio/minio).
 ### Environment variables
 
 You need to set the following [environment variables](https://docs.docker.com/compose/environment-variables/) to use this [Docker Compose](https://docs.docker.com/compose/).
-
-| Variable name  |  Description  | Default value |
-| - | - | - |
-| MINIO_ACCESS_KEY | MinIO access key | `"minio"` |
-| MINIO_SECRET_KEY | MinIO secret key | `"minio123"` |
-| MINIO_ROOT_USER | AWS Access Key | `None` |
-| MINIO_ROOT_PASSWORD | AWS Secret Key | `None` |
-
-The best way to do this is to add them to a `.env` file in the same directory as `docker-compose.yml`.
 
 <details><summary>.env</summary>
 <p>
@@ -77,23 +70,23 @@ You need to make some changes to the Keycloak Realm in order to use MinIO.
 
 - Navigate to the Keycloak UI: [http://localhost:8080/auth/](http://localhost:8080/auth/).
 - In the left menu, click on **Clients**.
-   - Click on **Edit** for account client.
-   - Turn on **Implicit Flow Enabled**.
-   - Add "*" to the **Valid Redirect URIs** field.
-   - Click on **Save**.
+    - Click on **Edit** for account client.
+    - Turn on **Implicit Flow Enabled**.
+    - Add "\*" to the **Valid Redirect URIs** field.
+    - Click on **Save**.
 - Also in the account client, click on **Mappers**.
-   - Click on **Create**.
-   - Fill in the **Name** field with "policy".
-   - Change the **Mapper Type** to "User Attribute".
-   - Fill in the "User Attribute" field with "policy".
-   - Fill in the "Token Claim Name" field with "policy".
-   - Click on **Save**.
+    - Click on **Create**.
+    - Fill in the **Name** field with "policy".
+    - Change the **Mapper Type** to "User Attribute".
+    - Fill in the **User Attribute** field with "policy".
+    - Fill in the **Token Claim Name** field with "policy".
+    - Click on **Save**.
 - In the left menu, click on **Users**.
-   - Click on **View all users**.
-   - Click on **Edit** for user "admin".
-   - Go to **Attributes** tab.
-   - Fill in the **Key** field with "policy" and **Value** field with "readwrite".
-   - Click on **Add** and then **Save**.
+    - Click on **View all users**.
+    - Click on **Edit** for user "admin".
+    - Go to **Attributes** tab.
+    - Fill in the **Key** field with "policy" and **Value** field with "readwrite".
+    - Click on **Add** and then **Save**.
 
 Right now, you should be able to log in to MinIO using the policies that you created in Keycloak.
 

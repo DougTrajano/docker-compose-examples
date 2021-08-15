@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  jacamo-web:
+    container_name: jacamo-web
+    build:
+      context: ./jacamo-web
+    command: gradle marcos
+    restart: always
+    volumes:
+      - ./data_jacamo:/app
+
+  # jacamo:
+  #   container_name: jacamo
+  #   build:
+  #     context: ./jacamo
+  #   command: /app/helloworld
+  #   restart: always
+  #   volumes:
+  #     - ./data_jacamo:/app
+
+volumes:
+  data_jacamo:
+    driver: local

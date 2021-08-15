@@ -11,6 +11,8 @@ This Docker Compose stack is a collection of services that can be used to run a 
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
+On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs.
+
 ## Services 
 
 ### [MLFlow](https://mlflow.org/)
@@ -30,18 +32,15 @@ JupyterLab is a web-based interactive development environment for Jupyter notebo
 
 ![](https://jupyter.org/assets/labpreview.png)
 
+### [Dataiku Data Science Studio (DSS)](https://www.dataiku.com/)
+
+Dataiku enables you to create, share, and reuse applications that leverage data and machine learning to extend and automate decision making.
+
 ## Project setup
 
 ### Environment variables
 
 You need to set the following [environment variables](https://docs.docker.com/compose/environment-variables/) to use this [Docker Compose](https://docs.docker.com/compose/).
-
-| Variable name  |  Description  | Default value |
-| - | - | - |
-| MINIO_ACCESS_KEY | MinIO access key | `"minio"` |
-| MINIO_SECRET_KEY | MinIO secret key | `"minio123"` |
-| MINIO_ROOT_USER | AWS Access Key | `None` |
-| MINIO_ROOT_PASSWORD | AWS Secret Key | `None` |
 
 The best way to do this is to add them to a `.env` file in the same directory as `docker-compose.yml`.
 
@@ -80,6 +79,12 @@ You can now access the following endpoints:
 | - | - |
 | [http://localhost:8888/](http://localhost:8888/) | JupyterLab |
 | [http://localhost:5000/](http://localhost:5000/) | MLflow UI |
+
+[Dataiku Data Science Studio (DSS)](https://www.dataiku.com/) is an optional service. To run the stack with it, execute the following command:
+
+```bash
+docker-compose --profile dataiku up
+```
 
 ## Next features
 
