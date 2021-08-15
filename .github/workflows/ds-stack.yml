@@ -16,7 +16,7 @@ jobs:
       - name: ds-stack config
         run: docker-compose -f "ds-stack/docker-compose.yml" config
       - name: ds-stack up
-        run: docker-compose -f "ds-stack/docker-compose.yml" up -d --build
+        run: docker-compose -f "ds-stack/docker-compose.yml" --profile dataiku up -d --build
       - name: ds-stack down
         run: docker-compose -f "ds-stack/docker-compose.yml" down
       - name: minio-sts config
