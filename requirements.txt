@@ -4,5 +4,5 @@ mkdocs==1.2.3
 mkdocs-git-revision-date-localized-plugin==0.10.3
 mkdocs-material==8.1.7
 mkdocs-material-extensions==1.0.3
-mkdocs-section-index==0.3.2
+mkdocs-section-index==0.3.3
 mkdocs-tooltips==0.1.0
