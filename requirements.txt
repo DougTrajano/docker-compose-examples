@@ -1,5 +1,5 @@
 mike==1.1.2
-Jinja2==3.0.1
+Jinja2==3.0.3
 mkdocs==1.2.3
 mkdocs-git-revision-date-localized-plugin==0.10.3
 mkdocs-material==8.1.7
