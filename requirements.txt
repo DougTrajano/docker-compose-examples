@@ -2,7 +2,7 @@ mike==1.1.2
 Jinja2==3.0.3
 mkdocs==1.2.3
 mkdocs-git-revision-date-localized-plugin==0.12.1
-mkdocs-material==8.1.9
+mkdocs-material==8.1.10
 mkdocs-material-extensions==1.0.3
 mkdocs-section-index==0.3.3
 mkdocs-tooltips==0.1.0
