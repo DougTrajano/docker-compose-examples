@@ -19,6 +19,7 @@ nav:
     - DS Stack: examples/ds-stack.md
     - MinIO STS: examples/minio-sts.md
     - JaCaMo: examples/jacamo.md
+    - n8n: examples/n8n.md
 
 theme:
   name: material
