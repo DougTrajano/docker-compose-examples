@@ -1,6 +1,6 @@
 # Minio STS - Docker Compose example
 
-In this example, we will set up a MinIO Gateway S3 with STS (Security Token Service) using [Docker Compose](https://docs.docker.com/compose/).
+In this example, we will set up a MinIO server with STS (Security Token Service) using [Docker Compose](https://docs.docker.com/compose/).
 
 - [Prerequisites](#prerequisites)
 - [Services](#services)
@@ -18,7 +18,7 @@ In this example, we will set up a MinIO Gateway S3 with STS (Security Token Serv
 
 ## Services
 
-### [MinIO Server](https://min.io/) - S3 Gateway
+### [MinIO Server](https://min.io/)
 
 MinIO is a High Performance Object Storage released under Apache License v2.0. It is API compatible with Amazon S3 cloud storage service. Use MinIO to build high performance infrastructure for machine learning, analytics and application data workloads.
 
@@ -34,9 +34,9 @@ Keycloak is an Open Source Identity and Access Management solution for modern Ap
 
 PostgreSQL is a powerful, open source object-relational database.
 
-### [MinIO Console](https://github.com/minio/console) - Optional
+The MinIO Console (web UI) is built into the server and is available at [http://localhost:9001](http://localhost:9001).
 
-A graphical user interface for [MinIO](https://github.com/minio/minio).
+> The image is `bitnamilegacy/minio`, because the official `minio/minio` images are no longer published to Docker Hub. MinIO has also removed the S3 Gateway mode, so the server runs in standard mode.
 
 ## Project setup
 
@@ -46,8 +46,8 @@ You need to set the following [environment variables](https://docs.docker.com/co
 
 | Variable name  |  Description  | Default value |
 | - | - | - |
-| MINIO_ACCESS_KEY | MinIO access key | `"minio"` |
-| MINIO_SECRET_KEY | MinIO secret key | `"minio123"` |
+| MINIO_ROOT_USER | MinIO root user | `"minio"` |
+| MINIO_ROOT_PASSWORD | MinIO root password | `"minio123"` |
 | MINIO_ROOT_USER | AWS Access Key | `None` |
 | MINIO_ROOT_PASSWORD | AWS Secret Key | `None` |
 
@@ -57,8 +57,8 @@ The best way to do this is to add them to a `.env` file in the same directory as
 <p>
 
 ```properties
-MINIO_ACCESS_KEY=minio
-MINIO_SECRET_KEY=minio123
+MINIO_ROOT_USER=minio
+MINIO_ROOT_PASSWORD=minio123
 MINIO_ROOT_USER=YOUR-AWS-ACCESS-KEY
 MINIO_ROOT_PASSWORD=YOUR-AWS-SECRET-KEY
 ```
@@ -71,13 +71,7 @@ MINIO_ROOT_PASSWORD=YOUR-AWS-SECRET-KEY
 To run all the required services, execute the following command:
 
 ```bash
-docker-compose up
-```
-
-[MinIO Console](#minio-console) is an optional service. To run the stack with it, execute the following command:
-
-```bash
-docker-compose --profile console up
+docker compose up
 ```
 
 ### Keycloak configuration

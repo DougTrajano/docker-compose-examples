@@ -1,9 +1,7 @@
-version: "3.9"
-
 services:
   etcd:
     container_name: etcd
-    image: bitnami/etcd:3.5.0-debian-10-r44
+    image: bitnamilegacy/etcd:3.5.21-debian-12-r0
     restart: always
     volumes:
       - data_etcd:/bitnami/etcd
@@ -12,7 +10,6 @@ services:
       BITNAMI_DEBUG: "true"
       ETCD_DATA_DIR: "/bitnami/etcd/data"
       ETCDCTL_API: 3
-      ETCD_ROOT_PASSWORD: root
       ETCD_NAME: etcd
       ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd:2380
       ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
@@ -22,32 +19,18 @@ services:
       ETCD_INITIAL_CLUSTER: etcd=http://etcd:2380
       ETCD_INITIAL_CLUSTER_STATE: new
 
-  console:
-    container_name: console
-    image: minio/console:v0.8.2
-    command: server
-    restart: always
-    profiles:
-      - console
-    depends_on:
-      - minio
-    ports:
-      - 9090:9090
-    environment:
-      CONSOLE_ACCESS_KEY: ${MINIO_ROOT_USER-minio}
-      CONSOLE_SECRET_KEY: ${MINIO_ROOT_PASSWORD-minio123}
-      CONSOLE_MINIO_SERVER: http://minio:9000
-
   minio:
     container_name: minio
-    image: bitnami/minio:2021.6.17-debian-10-r37
-    command: minio gateway s3
+    image: bitnamilegacy/minio:2025.7.23-debian-12-r5
     restart: always
     ports:
       - 9000:9000
+      - 9001:9001
     depends_on:
-      - etcd
-      - keycloak
+      etcd:
+        condition: service_started
+      keycloak:
+        condition: service_healthy
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD-minio123}
@@ -91,10 +74,10 @@ services:
 
   keycloak-db:
     container_name: keycloak-db
-    image: postgres:9.6.22-alpine
+    image: postgres:16-alpine
     restart: always
     volumes:
-      - data_keycloak:/var/lib/postgresql/
+      - data_keycloak:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak

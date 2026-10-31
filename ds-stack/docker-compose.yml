@@ -1,9 +1,7 @@
-version: "3.9"
-
 services:
   jupyterlab:
     container_name: jupyterab
-    image: jupyter/minimal-notebook:ubuntu-20.04
+    image: quay.io/jupyter/minimal-notebook:ubuntu-24.04
     entrypoint:
       - start-notebook.sh
       - --ServerApp.password=${JUPYTERLAB_PASSWORD-''}
@@ -19,20 +17,19 @@ services:
 
   mlflow-artifact:
     container_name: mlflow-artifact
-    image: minio/minio:RELEASE.2021-08-05T22-01-19Z
-    command: server /data
+    image: bitnamilegacy/minio:2025.7.23-debian-12-r5
     restart: always
     ports:
       - 9000:9000
     environment:
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY-minio}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY-minio123}
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY-minio123}
     volumes:
-      - ./data_minio:/data
+      - data_minio:/bitnami/minio/data
 
   mlflow-backend:
     container_name: mlflow-backend
-    image: postgres:9.6.22-alpine
+    image: postgres:16-alpine
     restart: always
     expose:
       - "${MLFLOW_DB_PORT-5432}"
@@ -41,7 +38,7 @@ services:
       POSTGRES_PASSWORD: ${MLFLOW_DB_PASSWORD-mlflow}
       POSTGRES_DB: ${MLFLOW_DB_DATABASE-mlflow}
     volumes:
-      - ./data_postgres:/var/lib/mysql
+      - data_postgres:/var/lib/postgresql/data
 
   mlflow:
     container_name: mlflow
