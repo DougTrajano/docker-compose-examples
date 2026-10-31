@@ -1,0 +1,21 @@
+name: Verify n8n
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: n8n config
+        run: docker compose -f "n8n/docker-compose.yml" config
+      - name: n8n up
+        run: docker compose -f "n8n/docker-compose.yml" up -d --build
+      - name: n8n down
+        run: docker compose -f "n8n/docker-compose.yml" down
