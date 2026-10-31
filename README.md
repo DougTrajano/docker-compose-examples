@@ -5,7 +5,7 @@ This repository contains a collection of examples of [Docker Compose](https://do
 ## Examples
 
 - [DS Stack](ds-stack) - JupyterLab + MLflow
-- [MinIO STS](minio-sts) - MinIO S3 Gateway + Keycloak + MinIO Console + Etcd
+- [MinIO STS](minio-sts) - MinIO + Keycloak + Etcd
 - [JaCaMo](jacamo) -  Framework for Multi-Agent Programming
 
 ## Documentation
