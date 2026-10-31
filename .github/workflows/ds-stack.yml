@@ -14,14 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: ds-stack config
-        run: docker-compose -f "ds-stack/docker-compose.yml" config
+        run: docker compose -f "ds-stack/docker-compose.yml" config
       - name: ds-stack up
-        run: docker-compose -f "ds-stack/docker-compose.yml" --profile dataiku up -d --build
+        run: docker compose -f "ds-stack/docker-compose.yml" --profile dataiku up -d --build
       - name: ds-stack down
-        run: docker-compose -f "ds-stack/docker-compose.yml" down
+        run: docker compose -f "ds-stack/docker-compose.yml" down
       - name: minio-sts config
-        run: docker-compose -f "minio-sts/docker-compose.yml" config
+        run: docker compose -f "minio-sts/docker-compose.yml" config
       - name: minio-sts up
-        run: docker-compose -f "minio-sts/docker-compose.yml" up -d --build
+        run: docker compose -f "minio-sts/docker-compose.yml" up -d --build
       - name: minio-sts down
-        run: docker-compose -f "minio-sts/docker-compose.yml" down
+        run: docker compose -f "minio-sts/docker-compose.yml" down
