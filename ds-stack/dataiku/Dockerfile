@@ -1,8 +1,8 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV DAITAKU_HOME=/opt/daitaku
 ENV DAITAKU_PORT=11000
-ENV DAITAKU_VERSION=9.0.1
+ENV DAITAKU_VERSION=14.5.0
 
 RUN apt-get update && apt-get upgrade -y && apt-get install curl -y && \
     mkdir /usr/local/daitaku && \
